@@ -2,7 +2,7 @@
 自己写的一些脚本
 # 脚本说明
 
-#format.sh
+#format
 
 用于生成 Model 的头文件
 
@@ -10,3 +10,5 @@
 2. 粘贴到 `model.json` 中去
 3. 执行 format.sh
 
+#ipa 
+用于打包，可直接执行， 上传蒲公英

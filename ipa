@@ -1,0 +1,36 @@
+#!/bin/bash --login
+
+set -e
+
+read -p "Pleas enter work path (default is \"$HOME/Desktop/MCRM_iOS\"): " WORK_PATH
+WORK_PATH=${WORK_PATH:-$HOME/Desktop/MCRM_iOS}
+echo $WORK_PATH
+
+read -p "Pleas enter build configuration 'Release' or 'ReleaseHttp'? " BUILD_CONGIG
+
+BUILD_PATH=$WORK_PATH/build
+PROJE_CTPATH=$WORK_PATH/mcrm/platforms/ios
+LINE=############################################################################################################
+
+echo "获取最新的 H5 产物$LINE"
+# scp root@192.168.71.29:/app/www/mcrm_web.zip $WORK_PATH/build/
+cd $WORK_PATH/mcrm/www//
+rm -rf !(README.md)
+unzip $HOME/Desktop/MCRM_iOS/build/mcrm_web.zip -d $WORK_PATH/mcrm/www//
+
+echo "编译 cordova 相关内容$LINE"
+cd $WORK_PATH/mcrm
+cordova clean
+cordova build
+git checkout .
+
+echo "编译打包打包$LINE"
+xcodebuild clean archive -workspace $PROJE_CTPATH/mcrm.xcworkspace -scheme mcrm -configuration $BUILD_CONGIG -archivePath $BUILD_PATH/mcrm.xcarchive | xcpretty
+rvm use system
+xcodebuild -exportArchive -exportOptionsPlist $PROJE_CTPATH/exportOptionsPlist.plist -archivePath $BUILD_PATH/mcrm.xcarchive -exportPath ../build/
+
+echo "上传发布$LINE"
+gem install shenzhen
+ipa distribute:pgyer -u 58567cf3c487eaade7183b589a0c30ab -a  7b0f7b7aebbdfb73448562d4e152b0cf -f $BUILD_PATH/mcrm.ipa -t
+
+exit
