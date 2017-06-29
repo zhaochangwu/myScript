@@ -1,0 +1,15 @@
+"custId": "1-VS-4517",
+"custType": "per", 
+"action": "new",
+"id": "1-VS-4517",// 如果是新建则此可以不传
+"category": "System Alert",
+"comment": "comment",
+"desp": "desp",
+"startTime": "01/05/2017 10:20:22",
+"endTime": "01/05/2017 10:20:22",
+"ownerId": "1-OXZ5",
+"priority": null,
+"status": "Done",
+"type": "213894",
+"ani": null,
+"actionChannel": "HTSC Phone"
